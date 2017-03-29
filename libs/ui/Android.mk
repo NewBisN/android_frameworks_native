@@ -48,6 +48,16 @@ LOCAL_SRC_FILES := \
 	Region.cpp \
 	UiConfig.cpp
 
+ifeq ($(BOARD_HAS_MTK_HARDWARE),true)
+LOCAL_SRC_FILES += \
+	mediatek/Fence.cpp \
+	mediatek/IDumpTunnel.cpp \
+	mediatek/RefBaseDump.cpp
+
+# just make everything compile for now... cleanups later
+LOCAL_CPPFLAGS := -std=c++1y -Weverything
+
+endif
 LOCAL_SHARED_LIBRARIES := \
 	libbinder \
 	libcutils \
@@ -55,6 +65,10 @@ LOCAL_SHARED_LIBRARIES := \
 	libsync \
 	libutils \
 	liblog
+ifeq ($(BOARD_HAS_MTK_HARDWARE),true)
+LOCAL_SHARED_LIBRARIES += \
+	libbinder
+endif
 
 ifneq ($(BOARD_FRAMEBUFFER_FORCE_FORMAT),)
 LOCAL_CFLAGS += -DFRAMEBUFFER_FORCE_FORMAT=$(BOARD_FRAMEBUFFER_FORCE_FORMAT)
